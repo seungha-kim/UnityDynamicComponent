@@ -6,6 +6,7 @@ namespace DynamicComponent
     public class Interaction
     {
         public TriggerKind trigger;
-        public Response response;
+        public ResponseKind response;
+        public ResponseData ResponseDataData;
     }
 }

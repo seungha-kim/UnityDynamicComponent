@@ -1,2 +1,2 @@
-- [] MoveTo 돌아가게 만들기
-- 
+- [x] MoveTo 돌아가게 만들기
+- [] custom serialize logic 

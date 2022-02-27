@@ -14,19 +14,19 @@ namespace DynamicComponent
         ScaleBy
     }
 
-    public abstract class Response
+    public abstract class ResponseData
     {
-        public static Response FromKind(ResponseKind kind)
+        public static ResponseData FromKind(ResponseKind kind)
         {
             return kind switch
             {
-                ResponseKind.MoveTo => new MoveToResponse(),
+                ResponseKind.MoveTo => new MoveToResponseData(),
             };
         }
     }
     
     [Serializable]
-    public class MoveToResponse: Response
+    public class MoveToResponseData: ResponseData
     {
         public Vector3 destination;
         public EasingKind easing;

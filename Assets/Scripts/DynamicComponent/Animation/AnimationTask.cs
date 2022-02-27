@@ -18,11 +18,11 @@ namespace DynamicComponent
 
         public abstract bool IsEnded();
 
-        public static AnimationTask FromResponse(Response response, GameObject obj)
+        public static AnimationTask FromResponse(ResponseData responseData, GameObject obj)
         {
-            return response switch
+            return responseData switch
             {
-                MoveToResponse r => new TranslateTask(obj, r.destination - obj.transform.position,
+                MoveToResponseData r => new TranslateTask(obj, r.destination - obj.transform.position,
                     TimeSpan.FromSeconds(r.durationInSeconds), r.easing),
             };
         }

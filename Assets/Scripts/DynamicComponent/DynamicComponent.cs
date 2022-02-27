@@ -14,7 +14,7 @@ namespace DynamicComponent
         {
             new Interaction()
             {
-                response = new MoveToResponse()
+                ResponseDataData = new MoveToResponseData()
                 {
                     destination = new Vector3(5, 0, 0),
                     durationInSeconds = 5,
@@ -50,7 +50,7 @@ namespace DynamicComponent
                 {
                     if (i.trigger is TriggerKind.Click)
                     {
-                        _scheduler.AddTask(AnimationTask.FromResponse(i.response, gameObject));
+                        _scheduler.AddTask(AnimationTask.FromResponse(i.ResponseDataData, gameObject));
                     }
                 }
             }
@@ -75,12 +75,47 @@ namespace DynamicComponent
             {
                 serializedObject.Update();
                 {
-                    EditorGUILayout.LabelField("Dynamic component gui");
                     var gameObject = (DynamicComponent) target;
-                    foreach (var i in gameObject._interactions)
+                    var toBeDeleted = new List<int>();
+                    
+                    if (GUILayout.Button("New interaction"))
                     {
-                        EditorGUILayout.LabelField(
-                            $"{Enum.GetName(typeof(TriggerKind), i.trigger)}, {i.response.GetType().Name}");
+                        var i = new Interaction()
+                        {
+                            ResponseDataData = new MoveToResponseData(),
+                            trigger = TriggerKind.Click,
+                        };
+                        gameObject._interactions.Add(i);
+                    }
+                    
+                    EditorGUILayout.LabelField("Dynamic component gui");
+                    
+                    for (int i = 0; i < gameObject._interactions.Count; i++)
+                    {
+                        var inter = gameObject._interactions[i];
+                        EditorGUILayout.BeginFoldoutHeaderGroup(true, $"Interaction {i}");
+                        inter.trigger = (TriggerKind)EditorGUILayout.EnumPopup("Trigger", inter.trigger);
+                        inter.response = (ResponseKind)EditorGUILayout.EnumPopup("Response", inter.response);
+                        EditorGUILayout.EndFoldoutHeaderGroup();
+                        switch (inter.ResponseDataData)
+                        {
+                            case MoveToResponseData r:
+                                r.destination = EditorGUILayout.Vector3Field("Destination", r.destination);
+                                r.easing = (EasingKind)EditorGUILayout.EnumPopup("Easing", r.easing);
+                                r.durationInSeconds = EditorGUILayout.FloatField("Duration (sec)", r.durationInSeconds);
+                                break;
+                        }
+
+                        if (GUILayout.Button($"Delete Interaction {i}"))
+                        {
+                            toBeDeleted.Add(i);
+                        }
+                    }
+
+                    toBeDeleted.Reverse();
+                    foreach (var i in toBeDeleted)
+                    {
+                        gameObject._interactions.RemoveAt(i);
                     }
                 }
                 serializedObject.ApplyModifiedProperties();
