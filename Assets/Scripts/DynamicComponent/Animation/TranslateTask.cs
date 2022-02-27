@@ -13,7 +13,6 @@ namespace DynamicComponent
         public TranslateTask(GameObject target, Vector3 translation, TimeSpan duration, EasingKind easing) : base(
             target, false)
         {
-            // translation to
             _translation = translation;
             _duration = duration;
             _easingFunc = EasingFuncs.GetEasingFunc(easing);
